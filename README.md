@@ -1,6 +1,8 @@
-# Heroku buildpack: Grails
+Buildpack for Grails
+=====================
 
-This is a Heroku buildpack for building and deploying Grails apps on Heroku.
+This is a [buildpack](https://www.cloudcontrol.com/dev-center/Platform%20Documentation#buildpacks-and-the-procfile) for
+Grails apps.
 
 ## Usage
 
@@ -23,42 +25,38 @@ Create a Git repository for a Grails 1.3.7 or 2.0 app:
      create mode 100644 application.properties
     ...
     
-Create a Heroku app on the Cedar stack
+Create a cloudControl app and push your code
 
-    $ heroku create --stack cedar
-    Creating vivid-mist-9984... done, stack is cedar
-    http://vivid-mist-9984.herokuapp.com/ | git@heroku.com:vivid-mist-9984.git
-    Git remote heroku added
-
-Push the app to Heroku
-
-    $ git push heroku master
-    Counting objects: 73, done.
-    Delta compression using up to 4 threads.
-    Compressing objects: 100% (69/69), done.
-    Writing objects: 100% (73/73), 97.82 KiB, done.
-    Total 73 (delta 2), reused 0 (delta 0)
-
-    -----> Heroku receiving push
-    -----> Grails app detected
-    -----> Grails 2.0.0 app detected
-    -----> Installing Grails 2.0.0..... done
-    -----> executing grails -plain-output -Divy.default.ivy.user.dir=/app/tmp/repo.git/.cache war
-
-           |Loading Grails 2.0.0
-           |Configuring classpath
-    ...
+    $ cctrlapp APP_NAME create java
+    $ cctrlapp APP_NAME push
+    [...]
+    -----> Receiving push
+    -----> Grails 2.2.0 app detected
+           WARNING: The Grails buildpack is currently in Beta.
+    -----> Installing OpenJDK 1.6...
+    -----> Installing Grails 2.2.0.....
+    -----> Done
+    -----> Executing grails -Divy.default.ivy.user.dir=/srv/tmp/buildpack-cache compile --non-interactive
+            [...]
+    -----> Executing grails -plain-output -Divy.default.ivy.user.dir=/srv/tmp/buildpack-cache war --non-interactive
+            [...]
+    -----> No server directory found. Adding webapp-runner 7.0.40.0 automatically.
+    -----> Building image
+    -----> Uploading image (73M)
+    
+    To ssh://APP_NAME@cloudcontrolled.com/repository.git
+     * [new branch]      master -> master
     
 
 ### Auto-detection
 
-Heroku auto-detects Grails apps by the existence of the `grails-app` directory in the project root and the `application.properties`  file is also expected to exist in the root directory. 
+cloudControl auto-detects Grails apps by the existence of the `grails-app` directory in the project root and the `application.properties`  file is also expected to exist in the root directory. 
 
 ### Using a Customized (Forked) Build Pack
+This is our default buildpack for Grails applications. In case you want to introduce some changes, fork our buildpack,
+apply changes and test it via [custom buildpack feature](https://www.cloudcontrol.com/dev-center/Guides/Third-Party%20Buildpacks/Third-Party%20Buildpacks):
 
-This is the default buildpack repository for Grails. You can fork this repo and tell Heroku to use the forked version by passing the `--buildpack` option to `heroku create`:
-
-    $ heroku create --stack cedar --buildpack http://github.com/jesperfj/heroku-buildpack-grails.git
+    $ cctrlapp APP_NAME create custom --buildpack https://github.com/cloudControl/buildpack-grails.git
 
 ## License
 
