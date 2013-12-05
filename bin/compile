@@ -167,13 +167,13 @@ if [ ! -d server ] ; then
 	      JETTY_RUNNER_VERSION=$(cat $CACHE_DIR/jettyVersion | sed "s/vendored://g")
         echo "-----> No server directory found. Adding jetty-runner $JETTY_RUNNER_VERSION automatically."
         DEFAULT_RUNNER_JAR=server/jetty-runner.jar
-        curl -fs $S3POSITORY_URL/maven-central/org/mortbay/jetty/jetty-runner/$JETTY_RUNNER_VERSION/jetty-runner-$JETTY_RUNNER_VERSION.jar > $DEFAULT_RUNNER_JAR
+        curl -fs $MAVEN_CENTRAL/org/mortbay/jetty/jetty-runner/$JETTY_RUNNER_VERSION/jetty-runner-$JETTY_RUNNER_VERSION.jar > $DEFAULT_RUNNER_JAR
         echo "vendored:$JETTY_RUNNER_VERSION" > server/jettyVersion
     else
         WEBAPP_RUNNER_VERSION=7.0.40.0
 	echo "-----> No server directory found. Adding webapp-runner $WEBAPP_RUNNER_VERSION automatically."
         DEFAULT_RUNNER_JAR=server/webapp-runner.jar
-        curl -fs $S3POSITORY_URL/maven-central/com/github/jsimone/webapp-runner/$WEBAPP_RUNNER_VERSION/webapp-runner-$WEBAPP_RUNNER_VERSION.jar > $DEFAULT_RUNNER_JAR
+        curl -fs $MAVEN_CENTRAL/com/github/jsimone/webapp-runner/$WEBAPP_RUNNER_VERSION/webapp-runner-$WEBAPP_RUNNER_VERSION.jar > $DEFAULT_RUNNER_JAR
 	echo "vendored:$WEBAPP_RUNNER_VERSION" > server/webappRunnerVersion
 	echo "vendored:$WEBAPP_RUNNER_VERSION" > $CACHE_DIR/webappRunnerVersion
     fi
